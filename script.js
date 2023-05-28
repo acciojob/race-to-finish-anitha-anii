@@ -1,30 +1,24 @@
 window.promises = [];
 
-// Do not change the code above this
-// add your promises to the array `promises`
-// script.js
-const promises = [
-  delay(1),
-  delay(2),
-  delay(3),
-  delay(4),
-  delay(5)
-];
-
-Promise.any(promises)
-  .then(result => {
-    const outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = `The first resolved promise's result: ${result}`;
-  })
-  .catch(error => {
-    console.error('No promises resolved:', error);
-  });
-
-function delay(seconds) {
-  return new Promise(resolve => {
-    const timeout = seconds * 1000;
+// Create an array of five promises with random delays between 1 and 5 seconds
+for (let i = 0; i < 5; i++) {
+  const delay = Math.floor(Math.random() * 5) + 1;
+  const promise = new Promise((resolve) => {
     setTimeout(() => {
-      resolve(seconds);
-    }, timeout);
+      resolve(`Promise ${i + 1} resolved after ${delay} seconds`);
+    }, delay * 1000);
   });
+  promises.push(promise);
 }
+
+// Wait for the first promise to resolve using Promise.any()
+Promise.any(promises)
+  .then((result) => {
+    // Print the result to the output div
+    const outputDiv = document.getElementById('output');
+    outputDiv.textContent = result;
+  })
+  .catch((error) => {
+    // Handle errors if no promise resolves
+    console.log('All promises rejected:', error);
+  });
